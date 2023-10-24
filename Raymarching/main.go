@@ -75,14 +75,22 @@ func (g *Game) Draw(screen *ebiten.Image) {
 			for iteration := 0; iteration < g.iterationMax; iteration++ {
 				minDist := g.GetMinDistance(currentPosition)
 				//fmt.Println(minDist)
-				if minDist > 0.0001 {
-					currentPosition.x += directionVector.x * minDist
-					currentPosition.y += directionVector.y * minDist
-					currentPosition.z += directionVector.z * minDist
-				} else {
+
+				if minDist < 0.0001 {
 					// collision
 					screen.Set(x, y, color.White)
 				}
+
+				if minDist > 1000.0 {
+					// too far nothing here
+					// miss
+					break
+				}
+
+				// travel along vector
+				currentPosition.x += directionVector.x * minDist
+				currentPosition.y += directionVector.y * minDist
+				currentPosition.z += directionVector.z * minDist
 			}
 
 		}
